@@ -1,0 +1,12 @@
+spring:
+  mvc:
+    view:
+      suffix: .html
+      
+server:
+  servlet:
+    encoding:
+      force: false
+      charset: UTF-8
+
+      
