@@ -1,7 +1,7 @@
 spring:
-  mvc:
-    view:
-      suffix: .html
+  profiles:
+    include:
+    - jdbc
       
 server:
   servlet:
@@ -9,4 +9,15 @@ server:
       force: false
       charset: UTF-8
 
-      
+logging:
+  pattern:
+    file: "[%d{HH:mm:ss.SSS}][%-5level][%logger.%method:line%line] - %msg%n"
+  file:
+    name: /logs/abc.log
+    max-history: 30
+  level:
+    org:
+      springframework: INFO
+  logback:
+    rollingpolicy:
+      file-name-pattern: "/logs/abc.%d{yyyy-MM-dd}.%i"
