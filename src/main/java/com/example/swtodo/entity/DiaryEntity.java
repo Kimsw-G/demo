@@ -19,7 +19,7 @@ public class DiaryEntity {
     @GeneratedValue
     private int pk;
     
-    private Date day;
-    private String text;
-    private int user;
+    private Date dday;
+    private String dtext;
+    private int suser;
 }

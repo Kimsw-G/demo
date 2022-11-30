@@ -20,5 +20,5 @@ public class BudgetEntity {
     private Date startday;
     private int budget;
     private int changed;
-    private int user;
+    private int suser;
 }

@@ -1,122 +1,120 @@
 package com.example.swtodo.service.impl;
 
+import java.util.Date;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.example.swtodo.entity.DiaryEntity;
+import com.example.swtodo.entity.EventEntity;
 import com.example.swtodo.entity.TodoEntity;
-import com.example.swtodo.entity.TodoProgressEntity;
-import com.example.swtodo.entity.UserEntity;
-import com.example.swtodo.repository.DiaryRepositroy;
-import com.example.swtodo.repository.TodoRepository;
+import com.example.swtodo.entity.SuserEntity;
+import com.example.swtodo.repository.DiaryRepo;
+import com.example.swtodo.repository.EventRepo;
+import com.example.swtodo.repository.TodoProgressRepo;
+import com.example.swtodo.repository.TodoRepo;
 import com.example.swtodo.service.TodoService;
 
 public class TodoServiceImpl implements TodoService{
 
     @Autowired
-    TodoRepository todoRepository;
+    TodoRepo todoRepo;
     @Autowired
-    DiaryRepositroy diaryRepositroy;
+    DiaryRepo diaryRepo;
     @Autowired
-    TodoProgressEntity todoProgressEntity;
+    EventRepo eventRepo;
+    @Autowired
+    TodoProgressRepo todoProgressRepo;
     
-
     @Override
     public void writeDiary(DiaryEntity diaryEntity) {
-        // TODO Auto-generated method stub
-        diaryRepositroy.save(diaryRepositroy);
+        diaryRepo.save(diaryRepo);
     }
 
     @Override
-    public void addEvent(TodoEntity todoEntity) {
-        // TODO Auto-generated method stub
-        todoEntity.setFlag(1);
-        todoRepository.save(todoEntity);
+    public void addEvent(EventEntity eventEntity) {
+        eventRepo.save(eventEntity);
     }
 
     @Override
     public void addTodo(TodoEntity todoEntity) {
-        // TODO Auto-generated method stub
-        todoEntity.setFlag(2);
-        todoRepository.save(todoEntity);
+        todoRepo.save(todoEntity);
     }
 
-    // 두 코드가 중복되는데 줄이는게 좋지않을까?
     @Override
-    public void delEvent(TodoEntity todoEntity) {
-        todoRepository.delete(todoEntity);
+    public void delEvent(EventEntity eventEntity) {
+        eventRepo.delete(eventEntity);
     }
 
     @Override
     public void delTodo(TodoEntity todoEntity) {
-        // TODO Auto-generated method stub
-        todoRepository.delete(todoEntity);
+        todoRepo.delete(todoEntity);
     }
 
     @Override
     public void delDiary(DiaryEntity diaryEntity) {
-        // TODO Auto-generated method stub
-        diaryRepositroy.delete(diaryRepositroy);
+        diaryRepo.delete(diaryRepo);
     }
 
     @Override
-    public void getDiary(UserEntity userEntity, int month) {
-        // TODO Auto-generated method stub
-        diaryRepositroy.findDiaryByUserAndMonth();
+    public List<DiaryEntity> getDiary(SuserEntity userEntity, Date date) {
+        // Diary를 특정 유저의 특정 기간만 가져오는 쿼리
+        return diaryRepo.findDiaryByUserAndDate(userEntity.getPk(), date);
         
     }
 
     @Override
-    public void getEvent(UserEntity userEntity, int month) {
-        // TODO Auto-generated method stub
+    public List<TodoEntity> getEvent(SuserEntity userEntity, Date date) {
+        // 특정 Diary를 특정 유저 및 특정 기간만 가져오는 쿼리
+        return todoRepo.findAllByUserAndDate(userEntity.getPk(),date);
         
     }
 
     @Override
-    public void getTodo(UserEntity userEntity, int month) {
-        // TODO Auto-generated method stub
+    public List<TodoEntity> getTodo(SuserEntity userEntity, Date date) {
+        return todoRepo.findAllByUserAndDate(userEntity.getPk(),date);
+    }
+
+    @Override
+    public void getEventThisMonth(SuserEntity userEntity, Date date) {
+        eventRepo.findAllByDate(userEntity.getPk(), date);
         
     }
 
     @Override
-    public void getEventThisMonth() {
-        // TODO Auto-generated method stub
+    public void getTodoPercentThisDay(SuserEntity userEntity,Date date) {
+        
         
     }
 
     @Override
-    public void getTodoPercentThisMonth() {
-        // TODO Auto-generated method stub
-        
+    public void getTodoPercentByNum(){
+
     }
 
     @Override
-    public void modDiary() {
-        // TODO Auto-generated method stub
-        
+    public void modDiary(DiaryEntity diaryEntity) {
+        diaryRepo.save(diaryRepo);
     }
 
     @Override
-    public void modEvent() {
-        // TODO Auto-generated method stub
-        
+    public void modEvent(EventEntity eventEntity) {
+        eventRepo.save(eventEntity);
     }
 
     @Override
-    public void modTodo() {
-        // TODO Auto-generated method stub
-        
+    public void modTodo(TodoEntity todoEntity) {
+        todoRepo.save(todoEntity);
     }
 
     @Override
-    public void doTodo() {
-        // TODO Auto-generated method stub
-        
+    public void doTodo(TodoEntity todoEntity) {
+        todoProgressRepo.doCheck(todoEntity.getPk());
     }
 
     @Override
-    public void undoTodo() {
-        // TODO Auto-generated method stub
-        
+    public void undoTodo(TodoEntity todoEntity) {
+        todoProgressRepo.undoCheck(todoEntity.getPk());
     }
     
 }

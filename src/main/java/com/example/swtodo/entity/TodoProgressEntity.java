@@ -1,5 +1,7 @@
 package com.example.swtodo.entity;
 
+import java.util.Date;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -16,5 +18,6 @@ public class TodoProgressEntity {
     private int pk;
     
     private int todonum;
-    private int check;
+    private int flag;
+    private Date dday;
 }

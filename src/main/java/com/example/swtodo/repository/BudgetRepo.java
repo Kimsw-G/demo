@@ -4,6 +4,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.example.swtodo.entity.BudgetEntity;
 
-public interface BudgetRepository extends JpaRepository<BudgetEntity,Long> {
+public interface BudgetRepo extends JpaRepository<BudgetEntity,Long> {
     
 }

@@ -1,7 +1,5 @@
 package com.example.swtodo.entity;
 
-import java.util.Date;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -12,15 +10,14 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@Entity(name="budget_change_history")
-@Table(name="budget_change_history")
-public class BudgetChangeHistoryEntity {
+@Entity(name = "suser")
+@Table(name = "suser")
+public class SuserEntity {
     @Id
     @GeneratedValue
     private int pk;
 
-    private int budget_num;
-    private Date chang_day;
-    private String text;
-    private int user;
+    private String sid;
+    private String spassword;
+    
 }
