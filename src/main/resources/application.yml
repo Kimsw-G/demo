@@ -4,6 +4,7 @@ spring:
     - jdbc
       
 server:
+  port: 8090
   servlet:
     encoding:
       force: false
