@@ -7,8 +7,8 @@ const LOGIN = () => import(/* webpackChunkName: "identi"   */ '../views/LoginVie
 const SIGNUP = () => import(/* webpackChunkName: "identi"  */ '../views/SignupView.vue')
 const TODOCAL = () => import(/* webpackChunkName: "todo"*/ '../views/TodocalView.vue')
 const TODO_SPEC_DAY = () => import(/* webpackChunkName: "todo" */ '../views/TodoSpecDayView.vue')
-const ADD_EVENT = () => import(/* webpackChunkName: "todo"  */ '../views/AddEventView.vue')
-const ADD_TODO = () => import(/* webpackChunkName: "todo"  */ '../views/AddTodoView.vue')
+// const ADD_EVENT = () => import(/* webpackChunkName: "todo"  */ '../components/AddEventView.vue')
+// const ADD_TODO = () => import(/* webpackChunkName: "todo"  */ '../components/AddTodoView.vue')
 const SEE_TODO = () => import(/* webpackChunkName: "todo"  */ '../views/SeeTodoView.vue')
 const BUDGETCAL = () => import(/* webpackChunkName: "budget"  */ '../views/BudgetCalView.vue')
 const BUDGET_SPEC_DAY = () => import(/* webpackChunkName: "budget"  */ '../views/BudgetSpecDayView.vue')
@@ -50,16 +50,16 @@ const routes = [
       default : TODO_SPEC_DAY
     }
   },
-  {
-    path: '/todocal/addevent',
-    name: 'todocal_addevent',
-    component: ADD_EVENT
-  },
-  {
-    path: '/todocal/addtodo',
-    name: 'todocal_addtodo',
-    component: ADD_TODO
-  },
+  // {
+  //   path: '/todocal/addevent',
+  //   name: 'todocal_addevent',
+  //   component: ADD_EVENT
+  // },
+  // {
+  //   path: '/todocal/addtodo',
+  //   name: 'todocal_addtodo',
+  //   component: ADD_TODO
+  // },
   {
     path: '/todocal/seetodo',
     name: 'todocal_seetodo',
