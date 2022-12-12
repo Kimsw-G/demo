@@ -1,6 +1,9 @@
 <template>
     <nav id="header-nav">
-        <router-link to="/" class="logo">로고</router-link>
+        <router-link to="/" class="logo">
+            <img id='header-logo' :src="curlogo" 
+            @mouseover="curlogo=logo_over" @mouseleave="curlogo=logo"/>
+        </router-link>
         <router-link to="/todocal"><button>내 달력</button></router-link>
         <router-link to="/err"><button>미구현</button></router-link>
         <router-link to="/err"><button>미구현</button></router-link>
@@ -13,7 +16,9 @@ export default {
     components: {},
     data() {
         return {
-            sampleData: ''
+            logo: require("@/../public/logo.png"),
+            logo_over: require("@/../public/logo_over.png"),
+            curlogo: require("@/../public/logo.png"),
         }
     },
     created() { },
@@ -24,6 +29,9 @@ export default {
 </script>
 
 <style scoped>
+#header-logo{
+    height: 2em;
+}
 #header-nav {
     display: grid;
     grid-template-columns: 10% repeat(3, 20%) repeat(2, 15%);

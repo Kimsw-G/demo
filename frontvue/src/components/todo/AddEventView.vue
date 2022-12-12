@@ -51,4 +51,10 @@ input{
     width: 90%;
     height: 2em;
 }
+#etext{
+    margin-top: 1em;
+    padding: 0.5em;
+    width: 90%;
+    height: 4em;
+}
 </style>

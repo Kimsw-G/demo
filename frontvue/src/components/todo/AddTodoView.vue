@@ -7,7 +7,8 @@
         <input type="date" id="startday" class="date" name="startday"><input type="date" id="endday" class="date" name="endday"> <br>
         <div class="dow-box">
             <button @click="checkDow(idx)" 
-                    @mouesenter.passive="overMouse(idx)"
+                    @mouseover="overMouse(idx)"
+                    @mouseleave="leaveMouse(idx)"
                     v-for="(dow,idx) in dows" 
                     :key="dow"
                     :id="`button${idx}`"
@@ -15,7 +16,8 @@
                 {{dow}}
             </button>
         </div>
-        <textarea rows="" cols="" id="etext" name="etext"/>
+        <textarea rows="" cols="" id="ttext" name="etext"/>
+        <button id="submit" @click="submitData">제출테스트</button>
     </div>
 </div>
 </template>
@@ -55,6 +57,16 @@ export default {
             console.log('hi');
             let button = document.querySelector("#button"+idx)
             button.style.backgroundColor="#7de0b4"
+        },
+        leaveMouse(idx){
+            let button = document.querySelector("#button"+idx)
+            if(!this.isDows[idx])button.style.backgroundColor="white"
+        },
+        submitData(){
+            for (let i = 0; i < this.isDows.length; i++) {
+                const isDow = this.isDows[i];
+                console.log(`${i}는 ${isDow}`);
+            }
         }
     }
 }
@@ -96,7 +108,8 @@ input{
     border: 0px;
     background-color: beige;
 }
-#etext{
+#ttext{
+    padding: 0.5em;
     width: 90%;
     height: 4em;
 }

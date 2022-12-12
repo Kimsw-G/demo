@@ -21,8 +21,8 @@
 <script>
 import MyCal from '@/components/MyCalendar.vue'
 import LeftBar from '@/components/LeftBar.vue'
-import AddEvent from '@/components/AddEventView.vue'
-import AddTodo from '@/components/AddTodoView.vue'
+import AddEvent from '@/components/todo/AddEventView.vue'
+import AddTodo from '@/components/todo/AddTodoView.vue'
 export default {
     components: {
         MyCal,

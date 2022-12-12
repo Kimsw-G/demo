@@ -6,10 +6,18 @@
             </th>
         </tr>
         <tr v-for="(date, index) in dates" :key="index">
-            <td v-for="(day, index) in date" :key="index">
+            <router-link :to="{
+                        path:'/todocal/specday',
+                        query:{
+                            year: year,
+                            month: month,
+                            day: day
+                        }}"
+                        class="td-link" 
+                        v-for="(day, index) in date" :key="index">
                 <div class="day">{{day}}</div>
                 <div class="context"></div>
-            </td>
+            </router-link>
         </tr>
 
     </table>
@@ -27,7 +35,7 @@ export default {
             firstDay: 0,
             lastDay: 0,
             preLastday: 0,
-            dates: []
+            dates: [],
         }
     },
     created() {
@@ -92,6 +100,13 @@ table{
 }
 th{
     height: 1em;
+}
+.td-link{
+    display: table-cell;
+    position: relative;
+    border: 1px solid ;
+    text-decoration: none;
+    color: black;
 }
 td{
     position: relative;

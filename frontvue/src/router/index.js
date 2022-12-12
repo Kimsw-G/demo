@@ -1,17 +1,17 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 
-const HEADER = () => import(/* webpackChunkName: "identi"   */ '../views/HeaderView.vue') 
+const HEADER = () => import(/* webpackChunkName: "identi"   */ '../components/HeaderView.vue') 
 
 const HOME_VIEW = () => import(/* webpackChunkName: "identi"   */ '../views/HomeView.vue')
 const LOGIN = () => import(/* webpackChunkName: "identi"   */ '../views/LoginView.vue')
 const SIGNUP = () => import(/* webpackChunkName: "identi"  */ '../views/SignupView.vue')
-const TODOCAL = () => import(/* webpackChunkName: "todo"*/ '../views/TodocalView.vue')
-const TODO_SPEC_DAY = () => import(/* webpackChunkName: "todo" */ '../views/TodoSpecDayView.vue')
+const TODOCAL = () => import(/* webpackChunkName: "todo"*/ '../views/todo/TodocalView.vue')
+const TODO_SPEC_DAY = () => import(/* webpackChunkName: "todo" */ '../views/todo/TodoSpecDayView.vue')
 // const ADD_EVENT = () => import(/* webpackChunkName: "todo"  */ '../components/AddEventView.vue')
 // const ADD_TODO = () => import(/* webpackChunkName: "todo"  */ '../components/AddTodoView.vue')
-const SEE_TODO = () => import(/* webpackChunkName: "todo"  */ '../views/SeeTodoView.vue')
-const BUDGETCAL = () => import(/* webpackChunkName: "budget"  */ '../views/BudgetCalView.vue')
-const BUDGET_SPEC_DAY = () => import(/* webpackChunkName: "budget"  */ '../views/BudgetSpecDayView.vue')
+const SEE_TODO = () => import(/* webpackChunkName: "todo"  */ '../views/todo/SeeTodoView.vue')
+const BUDGETCAL = () => import(/* webpackChunkName: "budget"  */ '../views//budget/BudgetCalView.vue')
+const BUDGET_SPEC_DAY = () => import(/* webpackChunkName: "budget"  */ '../views/budget/BudgetSpecDayView.vue')
 const routes = [
   {
     path: '/',
