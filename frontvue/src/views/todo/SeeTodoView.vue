@@ -31,10 +31,10 @@
         </ul>
         </form>
         <table id="open-todo">
-            <tr v-for="todo in openTodo" :key="todo" class="todo-tr">
-                <td>{{todo.title}}</td>
-                <td>{{todo.startDay}}</td>
-                <td>{{todo.endDay}}</td>
+            <tr v-for="todo in data.currentTodo" :key="todo" class="todo-tr">
+                <td>{{todo.ttitle}}</td>
+                <td>{{todo.start_day}}</td>
+                <td>{{todo.end_day}}</td>
                 <td class="progress-td"><progress class="todo-progress" :value="todo.percent" min="0" max="100"/> {{todo.percent}}%</td>
             </tr>
         </table>
@@ -66,10 +66,10 @@
             </li>
         </ul>
         <table id="close-todo">
-            <tr v-for="todo in closeTodo" :key="todo" class="todo-tr">
-                <td>{{todo.title}}</td>
-                <td>{{todo.startDay}}</td>
-                <td>{{todo.endDay}}</td>
+            <tr v-for="todo in data.expireTodo" :key="todo" class="todo-tr">
+                <td>{{todo.ttitle}}</td>
+                <td>{{todo.start_day}}</td>
+                <td>{{todo.end_day}}</td>
                 <td class="progress-td"><progress class="todo-progress" :value="todo.percent" min="0" max="100"/> {{todo.percent}}%</td>
             </tr>
         </table>
@@ -77,41 +77,60 @@
     <div id="side-bar">
 
     </div>
+    <!-- <button @click="imsi">fdsf</button> -->
 </div>
 </template>
 <script>
+import { reactive } from 'vue'
+import axios from 'axios'   
+import { onMounted } from 'vue';
+
 export default {
     components: {},
     data() {
         return {
-            openTodo:[
-                {
-                    title:'운동하기',
-                    percent:50,
-                    startDay:'2022-12-01',
-                    endDay:'2022-12-14'
-                }
-            ],
-            closeTodo:[
-                {
-                    title:'운동안하기',
-                    percent:90,
-                    startDay:'2022-11-01',
-                    endDay:'2022-11-30'
-                },
-                {
-                    title:'밥묵기',
-                    percent:70,
-                    startDay:'2022-11-01',
-                    endDay:'2022-11-30'
-                }
-            ]
         }
     },
-    created() {},
-    mounted() {},
-    unmounted() {},
-    methods: {}
+    methods: {
+        
+    },
+    setup(){
+        
+        let suser = 1 // 임시 번호, 추후 suser 값을 받아 진행
+        
+        let data = reactive({
+            currentTodo:[],
+            expireTodo:[]
+        })
+        const onCurrentTodo = ()=>{
+            axios.get(`/todo/getCurrentTodo?suser=${suser}`
+            ).then(res=>{
+                data.currentTodo = res.data
+                console.log(res.data);
+                console.log(data.currentTodo);
+                
+            })
+        }
+        const onExpiredTodo = ()=>{
+            axios.get(`/todo/getExpireTodo?suser=${suser}`
+            ).then(res=>{
+                data.expireTodo = res.data
+                console.log(data.expireTodo);
+                
+            })
+        }
+        const imsi = ()=>{
+            console.log(data.currentTodo);
+        }
+        onMounted(()=>{
+            onCurrentTodo()
+            onExpiredTodo()
+        })
+    
+        return{
+            onMounted, data, imsi
+        }
+    }
 }
 </script>
 <style scoped>

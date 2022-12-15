@@ -1,9 +1,8 @@
 package com.example.swtodo.entity;
 
-import java.util.Date;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -16,10 +15,10 @@ import lombok.Setter;
 @Table(name="diary")
 public class DiaryEntity {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private int pk;
     
-    private Date dday;
+    private String dday;
     private String dtext;
     private int suser;
 }

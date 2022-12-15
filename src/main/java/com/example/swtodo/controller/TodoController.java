@@ -1,16 +1,31 @@
 package com.example.swtodo.controller;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.example.swtodo.dto.SeeTodoDTO;
+import com.example.swtodo.dto.TodoDTO;
+import com.example.swtodo.entity.EventEntity;
+import com.example.swtodo.entity.SuserEntity;
+import com.example.swtodo.service.TodoService;
+
 
 @RestController
 @RequestMapping("/todo")
 public class TodoController {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
+    @Autowired
+    TodoService todoService;
 
     @GetMapping(value="/")
     public String goTodoMain(@RequestParam String param) {
@@ -20,33 +35,46 @@ public class TodoController {
     }
 
     // add page
-    @GetMapping(value="/addEvent")
-    public String goAddEvent(@RequestParam String param) {
-        logger.info("add event");
-
+    @PostMapping(value="/addEvent")
+    public String goAddEvent(@RequestBody EventEntity eventEntity) {
+        logger.info("add event : "+eventEntity);
+        todoService.addEvent(eventEntity);
+        
         return "addEvent";
     }
 
-    @GetMapping(value = "/addTodo")
-    public String goAddTodo(@RequestParam String param){
-        logger.info("add todo");
+    @PostMapping(value = "/addTodo")
+    public String goAddTodo(@RequestBody TodoDTO todoDTO){
+        logger.info("add todo : "+todoDTO);
+        todoService.addTodo(todoDTO);
 
         return "addTodo";
     }
 
     @GetMapping(value = "/addDiary")
-    public String goAddDiary(@RequestParam String param){
+    public String goAddDiary(){
         logger.info("add diary");
+
 
         return "addDiary";
     }
 
     // view page
-    @GetMapping(value = "/viewTodo")
-    public String goViewTodo(@RequestParam String param){
-        logger.info("view todo");
+    @GetMapping(value = "/getCurrentTodo")
+    public List<SeeTodoDTO> goCurrentTodo(@RequestParam String suser){
+        logger.info("current todo : user "+suser);
+        SuserEntity suserEntity = new SuserEntity();
+        suserEntity.setPk(Integer.parseInt(suser));
 
-        return "viewTodo";
+        return todoService.getCurrentTodo(suserEntity);
+    }
+    @GetMapping(value = "/getExpireTodo")
+    public List<SeeTodoDTO> goExpiredTodo(@RequestParam String suser){
+        logger.info("expire todo : user "+suser);
+        SuserEntity suserEntity = new SuserEntity();
+        suserEntity.setPk(Integer.parseInt(suser));
+        
+        return todoService.getExpiredTodo(suserEntity);
     }
 
     @GetMapping(value = "/viewReport")
