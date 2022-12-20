@@ -10,46 +10,38 @@ import org.springframework.stereotype.Service;
 
 import com.example.swtodo.dto.SeeTodoDTO;
 import com.example.swtodo.dto.TodoDTO;
-import com.example.swtodo.entity.DiaryEntity;
-import com.example.swtodo.entity.EventEntity;
-import com.example.swtodo.entity.TodoEntity;
+import com.example.swtodo.entity.FeedEntity;
 import com.example.swtodo.entity.SuserEntity;
-import com.example.swtodo.repository.DiaryRepo;
-import com.example.swtodo.repository.EventRepo;
 import com.example.swtodo.repository.TodoProgressRepo;
-import com.example.swtodo.repository.TodoRepo;
+import com.example.swtodo.repository.FeedRepo;
 import com.example.swtodo.share.DateConfigure;
 
-import ch.qos.logback.classic.net.SyslogAppender;
+
 
 @Service
 
-public class TodoServiceImpl implements TodoService {
+public class FeedServiceImpl implements FeedService {
 
     @Autowired
-    TodoRepo todoRepo;
-    // @Autowired
-    DiaryRepo diaryRepo;
-    @Autowired
-    EventRepo eventRepo;
+    FeedRepo feedRepo;
     @Autowired
     TodoProgressRepo todoProgressRepo;
     @Autowired
     DateConfigure dateConfigure;
 
     @Override
-    public void writeDiary(DiaryEntity diaryEntity) {
-        diaryRepo.save(diaryEntity);
+    public void addDiary(FeedEntity feedEntity) {
+        feedRepo.saveDiary(feedEntity);
     }
 
     @Override
-    public void addEvent(EventEntity eventEntity) {
-        eventRepo.save(eventEntity);
+    public void addEvent(FeedEntity feedEntity) {
+        feedRepo.saveEvent(feedEntity);
     }
 
     @Override
     public void addTodo(TodoDTO todoDTO) {
-        int pk = todoRepo.save(todoDTO.getTodoEntity()).getPk();
+        int pk = feedRepo.save(todoDTO.getTodoEntity()).getPk();
         List<String> dates = new ArrayList<String>();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         Calendar startDay = Calendar.getInstance();
@@ -86,52 +78,36 @@ public class TodoServiceImpl implements TodoService {
     }
 
     @Override
-    public void delEvent(EventEntity eventEntity) {
-        eventRepo.delete(eventEntity);
+    public void delEvent(FeedEntity feedEntity) {
     }
 
     @Override
-    public void delTodo(TodoEntity todoEntity) {
-        todoRepo.delete(todoEntity);
+    public void delTodo(FeedEntity feedEntity) {
     }
 
     @Override
-    public void delDiary(DiaryEntity diaryEntity) {
-        diaryRepo.delete(diaryEntity);
+    public void delDiary(FeedEntity feedEntity) {
     }
 
     @Override
-    public List<DiaryEntity> getDiary(SuserEntity userEntity, String date) {
+    public List<FeedEntity> getDiary(SuserEntity userEntity, String date) {
         // Diary를 특정 유저의 특정 기간만 가져오는 쿼리
-        return diaryRepo.findDiaryByUserAndDate(userEntity.getPk(), date);
+        return feedRepo.findDiaryToday(userEntity.getPk(), date);
 
     }
 
     @Override
-    public List<EventEntity> getEvent(SuserEntity userEntity, String date) {
-        // 특정 Diary를 특정 유저 및 특정 기간만 가져오는 쿼리
+    public List<FeedEntity> getEvent(SuserEntity userEntity, String date) {
 
-        return eventRepo.findAllByDate(userEntity.getPk(), date);
+        return feedRepo.findEventBySuser(0, date);
 
     }
 
     @Override
     public List<SeeTodoDTO> getCurrentTodo(SuserEntity userEntity) {
-        List<TodoEntity> sqlList = todoRepo.findAllCurrentTodo(userEntity.getPk(), dateConfigure.getToday());
+        List<FeedEntity> sqlList = feedRepo.findTodoCurrent(userEntity.getPk(), dateConfigure.getToday());
         List<SeeTodoDTO> resultList = new ArrayList<>();
-        for (TodoEntity todoEntity : sqlList) {
-            SeeTodoDTO seeTodoDTO = new SeeTodoDTO();
-            seeTodoDTO.insertObject(todoEntity);
-            seeTodoDTO.setPercent(todoProgressRepo.calcPercentageByNumAndPk(seeTodoDTO.getPk()));
-            resultList.add(seeTodoDTO);
-        }
-        return resultList;
-    }
-
-    public List<SeeTodoDTO> getExpiredTodo(SuserEntity userEntity) {
-        List<TodoEntity> sqlList = todoRepo.findAllExpiredTodo(userEntity.getPk(), dateConfigure.getToday());
-        List<SeeTodoDTO> resultList = new ArrayList<>();
-        for (TodoEntity todoEntity : sqlList) {
+        for (FeedEntity todoEntity : sqlList) {
             SeeTodoDTO seeTodoDTO = new SeeTodoDTO();
             seeTodoDTO.insertObject(todoEntity);
             seeTodoDTO.setPercent(todoProgressRepo.calcPercentageByNumAndPk(seeTodoDTO.getPk()));
@@ -141,8 +117,30 @@ public class TodoServiceImpl implements TodoService {
     }
 
     @Override
+    public List<SeeTodoDTO> getExpiredTodo(SuserEntity userEntity) {
+        List<FeedEntity> sqlList = feedRepo.findTodoExpired(userEntity.getPk(), dateConfigure.getToday());
+        List<SeeTodoDTO> resultList = new ArrayList<>();
+        for (FeedEntity todoEntity : sqlList) {
+            SeeTodoDTO seeTodoDTO = new SeeTodoDTO();
+            seeTodoDTO.insertObject(todoEntity);
+            seeTodoDTO.setPercent(todoProgressRepo.calcPercentageByNumAndPk(seeTodoDTO.getPk()));
+            resultList.add(seeTodoDTO);
+        }
+        return resultList;
+    }
+
+    @Override
+    public List<FeedEntity> getSpecDay(SuserEntity userEntity,String date, String page){
+        List<FeedEntity> feedList = feedRepo.findAllToday(1, date, Integer.parseInt(page));
+
+        return feedList;
+    }
+
+    
+
+    @Override
     public void getEventThisMonth(SuserEntity userEntity, String date) {
-        eventRepo.findAllByDate(userEntity.getPk(), date);
+        feedRepo.findEventBySuser(userEntity.getPk(), date);
 
     }
 
@@ -157,27 +155,27 @@ public class TodoServiceImpl implements TodoService {
     }
 
     @Override
-    public void modDiary(DiaryEntity diaryEntity) {
-        diaryRepo.save(diaryEntity);
+    public void modDiary(FeedEntity diaryEntity) {
+        feedRepo.save(diaryEntity);
     }
 
     @Override
-    public void modEvent(EventEntity eventEntity) {
-        eventRepo.save(eventEntity);
+    public void modEvent(FeedEntity eventEntity) {
+        feedRepo.save(eventEntity);
     }
 
     @Override
-    public void modTodo(TodoEntity todoEntity) {
-        todoRepo.save(todoEntity);
+    public void modTodo(FeedEntity todoEntity) {
+        feedRepo.save(todoEntity);
     }
 
     @Override
-    public void doTodo(TodoEntity todoEntity) {
+    public void doTodo(FeedEntity todoEntity) {
         todoProgressRepo.doCheck(todoEntity.getPk());
     }
 
     @Override
-    public void undoTodo(TodoEntity todoEntity) {
+    public void undoTodo(FeedEntity todoEntity) {
         todoProgressRepo.undoCheck(todoEntity.getPk());
     }
 

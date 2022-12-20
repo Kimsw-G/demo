@@ -1,11 +1,11 @@
 <template>
     <div class="black-bg" @click="closeModal">
         <div class="white-bg">
-            <label class="etitle-label" for="etitle">제목</label>
-            <input type="text" id="etitle" v-model="etitle" placeholder="제목"> <br>
-            <label class="date-label" for="dday">D-Day</label>
-            <input type="date" id="dday" v-model="dday"> <br>
-            <textarea rows="" cols="" id="etext" v-model="etext" placeholder="내용" />
+            <label class="ftitle-label" for="ftitle">제목</label>
+            <input type="text" id="ftitle" v-model="ftitle" placeholder="제목"> <br>
+            <label class="date-label" for="start_day">D-Day</label>
+            <input type="date" id="start_day" v-model="start_day"> <br>
+            <textarea rows="" cols="" id="ftext" v-model="ftext" placeholder="내용" />
             <button @click="registEvent">이벤트 추가</button>
             <pre id="errMsg">{{ errMsg }}</pre>
         </div>
@@ -15,14 +15,14 @@
 import axios from 'axios'
 export default {
     props: {
-        issAddEvent: Boolean
+        isAddEvent: Boolean
     },
     components: {},
     data() {
         return {
-            etitle: '',
-            dday: '',
-            etext: '',
+            ftitle: '',
+            start_day: '',
+            ftext: '',
             errMsg: ''
         }
     },
@@ -35,18 +35,16 @@ export default {
         },
         registEvent() {
             let data = {
-                etitle: this.etitle,
-                etext: this.etext,
+                ftitle: this.ftitle,
+                ftext: this.ftext,
                 suser: 1,
-                dday: this.dday,
+                start_day: this.start_day,
                 // suser : this.suser
                 // 추후 유저도 추가
             }
+            console.log(data);
 
-            // this.axios.defaults.headers.common = {
-            //     'Content-Type': 'application/json'
-            // }
-            axios.post("/todo/addEvent", data
+            axios.post("/feed/addEvent", data
             ).then(res => {
                 console.log(res);
                 this.$emit("closeEvent")
@@ -63,13 +61,13 @@ input {
     padding: 5px 7px;
 }
 
-#etitle {
+#ftitle {
     width: 90%;
     height: 2em;
     margin: 3px;
 }
 
-.etitle-label {
+.ftitle-label {
     display: inline-block;
     width: 90%;
     margin-top: 10px;
@@ -80,12 +78,12 @@ input {
     width: 90%;
 }
 
-#dday {
+#start_day {
     width: 90%;
     height: 2em;
 }
 
-#etext {
+#ftext {
     margin-top: 1em;
     padding: 0.5em;
     width: 90%;

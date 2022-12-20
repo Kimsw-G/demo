@@ -3,7 +3,7 @@
         <div class="result" v-for="comment in comments" :key="comment">
             <div>대충 내용</div>
         </div>
-        <InfiniteLoading @to="load"></InfiniteLoading>
+        <InfiniteLoading @infinite="load"></InfiniteLoading>
     </div>
     <div id="cal">
         <MyCal></MyCal>
@@ -12,17 +12,29 @@
 <script setup>
 import { ref } from 'vue';
 import InfiniteLoading from "v3-infinite-loading";
+import { useRoute } from 'vue-router';
+import MyCal from '@/components/MyCalendar.vue'
+import axios from 'axios';
 // import "v3-infinite-loading/lib/style.css";
 
+let query = useRoute().query
 let comments = ref([])
 let page = 1
+
+const date = `"${query.year}-${query.month}-${query.day}"`
+const suser = 1
+
 const load = async $state => {
+    console.log('im here');
     try {
-        // TODO : 대충 연월일을 쿼리로 날려 값을 들고올것
-        const response = await fetch(`http://127.0.0.1:10000/list?page=${page}`)
-        const json = await response.json()
-        if (json.length < 10) $state.complete()
+        const json = loadData()
+        
+        if (json.length < 10) {
+            console.log("complete all");
+            $state.complete()
+        }
         else {
+            console.log("load");
             comments.value.push(...json)
             $state.loaded()
         }
@@ -30,12 +42,24 @@ const load = async $state => {
         console.log('hi' + page);
     } catch (error) {
         $state.error()
+        console.log(error);
     }
+}
+
+
+const loadData = ()=>{
+    axios.get(`/feed/getSpecDay?suser=${suser}&day=${date}&page=${page}`
+    ).then(res=>{
+        let data = res.data
+        console.log("data:" + data);
+        return data
+    }).catch(err=>{
+        console.log(err);
+    })
 }
 </script>
 
 <script>
-import MyCal from '@/components/MyCalendar.vue'
 export default {
     components: {
         MyCal,
@@ -46,9 +70,6 @@ export default {
             sampleData: ''
         }
     },
-    created() {},
-    mounted() {},
-    unmounted() {},
     methods: {}
 }
 </script>
@@ -56,7 +77,7 @@ export default {
 #main{
     display: inline-block;
     width: 70vw;
-
+    overflow: scroll;
 }
 #cal{
     vertical-align: top ;
@@ -74,5 +95,9 @@ export default {
 }
 .td-link:hover{
     background-color: #7de0b4;
+}
+.imsi{
+    height: 110vh;
+    background-color: yellow;
 }
 </style>

@@ -103,7 +103,7 @@ export default {
             expireTodo:[]
         })
         const onCurrentTodo = ()=>{
-            axios.get(`/todo/getCurrentTodo?suser=${suser}`
+            axios.get(`/feed/getCurrentTodo?suser=${suser}`
             ).then(res=>{
                 data.currentTodo = res.data
                 console.log(res.data);
@@ -112,7 +112,7 @@ export default {
             })
         }
         const onExpiredTodo = ()=>{
-            axios.get(`/todo/getExpireTodo?suser=${suser}`
+            axios.get(`/feed/getExpireTodo?suser=${suser}`
             ).then(res=>{
                 data.expireTodo = res.data
                 console.log(data.expireTodo);

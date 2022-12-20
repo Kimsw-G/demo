@@ -1,6 +1,6 @@
 package com.example.swtodo.dto;
 
-import com.example.swtodo.entity.TodoEntity;
+import com.example.swtodo.entity.FeedEntity;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -13,17 +13,17 @@ public class SeeTodoDTO{
     private int pk;
     private String start_day;
     private String end_day;
-    private String ttitle;
-    private String ttext;
+    private String ftitle;
+    private String ftext;
     private int suser;
     private int percent;
 
-    public void insertObject(TodoEntity todoEntity){
+    public void insertObject(FeedEntity todoEntity){
         this.pk = todoEntity.getPk();
         this.start_day = todoEntity.getStart_day();
         this.end_day = todoEntity.getEnd_day();
-        this.ttitle = todoEntity.getTtitle();
-        this.ttext = todoEntity.getTtext();
+        this.ftitle = todoEntity.getFtitle();
+        this.ftext = todoEntity.getFtext();
         this.suser = todoEntity.getSuser();
     }
 }

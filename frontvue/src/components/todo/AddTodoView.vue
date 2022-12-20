@@ -1,8 +1,8 @@
 <template>
 <div class="black-bg" @click="closeModal">
     <div class="white-bg">
-        <label class="ttitle-label" for="ttitle">제목</label>
-        <input type="text" id="ttitle" name="ttitle" v-model="ttitle"> <br>
+        <label class="ftitle-label" for="ftitle">제목</label>
+        <input type="text" id="ftitle" name="ftitle" v-model="ftitle"> <br>
         <label class="date-label" for="startday" >시작일</label><label class="date-label" for="endday">종료일</label>
         <input type="date" id="startday" class="date" name="startday" v-model="start_day"><input type="date" id="endday" class="date" name="endday" v-model="end_day"> <br>
         <div class="dow-box">
@@ -16,7 +16,7 @@
                 {{dow}}
             </button>
         </div>
-        <textarea rows="" cols="" id="ttext" name="etext" v-model="ttext"/>
+        <textarea rows="" cols="" id="ftext" name="etext" v-model="ftext"/>
         <button id="submit" @click="submitData">제출테스트</button>
         <pre id="errMsg">{{ errMsg }}</pre>
     </div>
@@ -39,8 +39,8 @@ export default {
             errMsg: '',
             start_day: '',
             end_day: '',
-            ttitle: '',
-            ttext: '',
+            ftitle: '',
+            ftext: '',
             suser: ''
         }
     },
@@ -78,12 +78,12 @@ export default {
             let data = {
                 start_day: this.start_day,
                 end_day: this.end_day,
-                ttitle: this.ttitle,
-                ttext: this.ttext,
+                ftitle: this.ftitle,
+                ftext: this.ftext,
                 suser: 1,
                 freq: freq
             }
-            this.axios.post("/todo/addTodo",data
+            this.axios.post("/feed/addTodo",data
             ).then(()=>{
                 this.$emit("closeTodo")
             }).catch(()=>{
@@ -97,12 +97,12 @@ export default {
 input{
     padding: 5px 7px;
 }
-#ttitle{
+#ftitle{
     width: 90%;
     height: 2em;
     margin: 3px;
 }
-.ttitle-label{
+.ftitle-label{
     display: inline-block;
     width: 90%;
     margin-top: 10px;
@@ -130,7 +130,7 @@ input{
     border: 0px;
     background-color: beige;
 }
-#ttext{
+#ftext{
     padding: 0.5em;
     width: 90%;
     height: 4em;

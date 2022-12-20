@@ -1,7 +1,7 @@
 package com.example.swtodo.dto;
 
 
-import com.example.swtodo.entity.TodoEntity;
+import com.example.swtodo.entity.FeedEntity;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -18,12 +18,12 @@ public class TodoDTO{
     private int suser;
     private int freq;
 
-    public TodoEntity getTodoEntity(){
-        TodoEntity todoEntity = new TodoEntity();
+    public FeedEntity getTodoEntity(){
+        FeedEntity todoEntity = new FeedEntity();
         todoEntity.setStart_day(this.start_day);
         todoEntity.setEnd_day(this.end_day);
-        todoEntity.setTtitle(this.ttitle);
-        todoEntity.setTtext(this.ttext);
+        todoEntity.setFtitle(this.ttitle);
+        todoEntity.setFtext(this.ttext);
         todoEntity.setSuser(this.suser);
 
         return todoEntity;
