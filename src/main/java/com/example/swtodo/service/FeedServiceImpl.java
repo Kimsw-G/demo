@@ -131,8 +131,7 @@ public class FeedServiceImpl implements FeedService {
 
     @Override
     public List<FeedEntity> getSpecDay(SuserEntity userEntity,String date, String page){
-        List<FeedEntity> feedList = feedRepo.findAllToday(1, date, Integer.parseInt(page));
-
+        List<FeedEntity> feedList = feedRepo.findAllToday(userEntity.getPk(), date, Integer.parseInt(page));
         return feedList;
     }
 

@@ -17,14 +17,14 @@ public class FeedCustomRepoImpl implements FeedCustomRepo {
     @Override
     public List<FeedEntity> findTodoBySuser(int suser, String today) {
         final String SQL = "SELECT f FROM feed AS f " +
-                "WHERE f.suser = :suser " +
-                "AND f.start_day BETWEEN :today AND LAST_DAY(:today) " +
-                "AND f.end_day BETWEEN :today AND LAST_DAY(:today) " +
-                "AND f.ftype=1";
+        "WHERE f.suser = :suser " +
+        "AND f.start_day BETWEEN :today AND LAST_DAY(:today) " +
+        "AND f.end_day BETWEEN :today AND LAST_DAY(:today) " +
+        "AND f.ftype=1";
         List<FeedEntity> result = em.createQuery(SQL, FeedEntity.class)
-                .setParameter("suser", suser)
-                .setParameter("today", today)
-                .getResultList();
+        .setParameter("suser", suser)
+        .setParameter("today", today)
+        .getResultList();
         em.clear();
         return result;
     }
@@ -33,13 +33,13 @@ public class FeedCustomRepoImpl implements FeedCustomRepo {
     @Override
     public List<FeedEntity> findTodoToday(int suser, String today) {
         final String SQL = "SELECT f FROM feed AS f " +
-                "WHERE f.suser = :suser " +
-                "AND f.start_day BETWEEN :today AND LAST_DAY(:today) " +
-                "AND f.ftype=1";
+        "WHERE f.suser = :suser " +
+        "AND f.start_day BETWEEN :today AND LAST_DAY(:today) " +
+        "AND f.ftype=1";
         List<FeedEntity> result = em.createQuery(SQL, FeedEntity.class)
-                .setParameter("suser", suser)
-                .setParameter("today", today)
-                .getResultList();
+        .setParameter("suser", suser)
+        .setParameter("today", today)
+        .getResultList();
         em.clear();
         return result;
     }
@@ -48,13 +48,13 @@ public class FeedCustomRepoImpl implements FeedCustomRepo {
     @Override
     public List<FeedEntity> findTodoCurrent(int suser, String today) {
         final String SQL = "SELECT f FROM feed AS f " +
-                "WHERE f.suser=:suser " +
-                "AND :today BETWEEN f.start_day AND f.end_day " +
-                "AND f.ftype=1";
+        "WHERE f.suser=:suser " +
+        "AND :today BETWEEN f.start_day AND f.end_day " +
+        "AND f.ftype=1";
         List<FeedEntity> result = em.createQuery(SQL, FeedEntity.class)
-                .setParameter("suser", suser)
-                .setParameter("today", today)
-                .getResultList();
+        .setParameter("suser", suser)
+        .setParameter("today", today)
+        .getResultList();
         em.clear();
         return result;
     }
@@ -63,13 +63,13 @@ public class FeedCustomRepoImpl implements FeedCustomRepo {
     @Override
     public List<FeedEntity> findTodoExpired(int suser, String today) {
         final String SQL = "SELECT f FROM feed AS f " +
-                "WHERE f.suser=:suser " +
-                "AND f.end_day < :today " +
-                "AND f.ftype=1";
+        "WHERE f.suser=:suser " +
+        "AND f.end_day < :today " +
+        "AND f.ftype=1";
         List<FeedEntity> result = em.createQuery(SQL, FeedEntity.class)
-                .setParameter("suser", suser)
-                .setParameter("today", today)
-                .getResultList();
+        .setParameter("suser", suser)
+        .setParameter("today", today)
+        .getResultList();
         em.clear();
         return result;
     }
@@ -79,13 +79,13 @@ public class FeedCustomRepoImpl implements FeedCustomRepo {
     @Override
     public List<FeedEntity> findEventBySuser(int suser, String today) {
         final String SQL = "SELECT f.* FROM feed AS f " +
-                "WHERE f.suser = :suser " +
-                "AND :today BETWEEN f.start_day AND f.end_day " +
-                "AND f.ftype=2";
+        "WHERE f.suser = :suser " +
+        "AND :today BETWEEN f.start_day AND f.end_day " +
+        "AND f.ftype=2";
         List<FeedEntity> result = em.createQuery(SQL, FeedEntity.class)
-                .setParameter("suser", suser)
-                .setParameter("today", today)
-                .getResultList();
+        .setParameter("suser", suser)
+        .setParameter("today", today)
+        .getResultList();
         em.clear();
         return result;
 
@@ -95,13 +95,13 @@ public class FeedCustomRepoImpl implements FeedCustomRepo {
     @Override
     public List<FeedEntity> findEventToday(int suser, String today) {
         final String SQL = "SELECT f.* FROM feed AS f " +
-                "WHERE f.suser = :suser " +
-                "AND f.start_day = :tdoay " +
-                "AND f.ftype=2";
+        "WHERE f.suser = :suser " +
+        "AND f.start_day = :tdoay " +
+        "AND f.ftype=2";
         List<FeedEntity> result = em.createQuery(SQL, FeedEntity.class)
-                .setParameter("suser", suser)
-                .setParameter("today", today)
-                .getResultList();
+        .setParameter("suser", suser)
+        .setParameter("today", today)
+        .getResultList();
         em.clear();
         return result;
     }
@@ -110,15 +110,15 @@ public class FeedCustomRepoImpl implements FeedCustomRepo {
     @Override
     public void saveEvent(FeedEntity feedEntity) {
         String sql = "INSERT INTO feed(start_day, ftitle, ftext, suser, ftype) VALUES " +
-                "(:start_day, :ftitle, :ftext, :suser, 2)";
+        "(:start_day, :ftitle, :ftext, :suser, 2)";
 
         System.out.println(sql);
         em.createNativeQuery(sql)
-                .setParameter("start_day", feedEntity.getStart_day())
-                .setParameter("ftitle", feedEntity.getFtitle())
-                .setParameter("ftext", feedEntity.getFtext())
-                .setParameter("suser", feedEntity.getSuser())
-                .executeUpdate();
+        .setParameter("start_day", feedEntity.getStart_day())
+        .setParameter("ftitle", feedEntity.getFtitle())
+        .setParameter("ftext", feedEntity.getFtext())
+        .setParameter("suser", feedEntity.getSuser())
+        .executeUpdate();
         em.clear();
     }
 
@@ -127,13 +127,13 @@ public class FeedCustomRepoImpl implements FeedCustomRepo {
     @Override
     public List<FeedEntity> findDiaryToday(int suser, String today) {
         final String SQL = "SELECT f.* FROM feed AS f " +
-                "WHERE f.suser = :suser " +
-                "AND f.start_day = :tdoay " +
-                "AND f.ftype=3";
+        "WHERE f.suser = :suser " +
+        "AND f.start_day = :tdoay " +
+        "AND f.ftype=3";
         List<FeedEntity> result = em.createQuery(SQL, FeedEntity.class)
-                .setParameter("suser", suser)
-                .setParameter("today", today)
-                .getResultList();
+        .setParameter("suser", suser)
+        .setParameter("today", today)
+        .getResultList();
         return result;
     }
 
@@ -141,15 +141,15 @@ public class FeedCustomRepoImpl implements FeedCustomRepo {
     @Override
     public void saveDiary(FeedEntity feedEntity) {
         String sql = "INSERT INTO feed(start_day, ftitle, ftext, suser, ftype) VALUES " +
-                "(:start_day, :ftitle, :ftext, :suser, 3)";
+        "(:start_day, :ftitle, :ftext, :suser, 3)";
 
         System.out.println(sql);
         em.createNativeQuery(sql)
-                .setParameter("start_day", feedEntity.getStart_day())
-                .setParameter("ftitle", feedEntity.getFtitle())
-                .setParameter("ftext", feedEntity.getFtext())
-                .setParameter("suser", feedEntity.getSuser())
-                .executeUpdate();
+        .setParameter("start_day", feedEntity.getStart_day())
+        .setParameter("ftitle", feedEntity.getFtitle())
+        .setParameter("ftext", feedEntity.getFtext())
+        .setParameter("suser", feedEntity.getSuser())
+        .executeUpdate();
         em.clear();
     }
 
@@ -159,15 +159,20 @@ public class FeedCustomRepoImpl implements FeedCustomRepo {
     // 특정 유저의 '특정 날짜'의 모든 피드를 가져옴. 10개씩 가져옴
     @Override
     public List<FeedEntity> findAllToday(int suser, String today, int page) {
-        final String SQL = "SELECT f FROM feed AS f " +
-                "WHERE f.suser = :suser " +
-                "AND f.start_day = :today";
+        final String SQL = "SELECT f FROM feed AS f "+
+        "WHERE f.suser=:suser " +
+        "AND DATE(:today) BETWEEN DATE_FORMAT(f.start_day,'%YY-%mm-%dd') AND DATE_FORMAT(f.end_day,'%YY-%mm-%dd') ";
+        System.out.println("today : "+today);
+
         List<FeedEntity> result = em.createQuery(SQL, FeedEntity.class)
-                .setParameter("suser", suser)
-                .setParameter("today", today)
-                .setFirstResult((page-1)*10)
-                .setMaxResults((page)*10)
-                .getResultList();
+        .setParameter("suser", suser)
+        .setParameter("today", today)
+        .setFirstResult((page-1)*10)
+        .setMaxResults(10)
+        .getResultList();
+
+        em.clear();
+        
         return result;
 
     }

@@ -1,7 +1,13 @@
 <template>
     <div id="main">
-        <div class="result" v-for="comment in comments" :key="comment">
-            <div>대충 내용</div>
+        <div class="result" v-for="feed in data.feeds" :key="feed">
+            <div>
+                {{ feed.pk }},
+                {{ feed.ftitle }},
+                {{ feed.ftext }},
+                {{ feed.start_day }},
+                {{ feed.end_day }},
+            </div>
         </div>
         <InfiniteLoading @infinite="load"></InfiniteLoading>
     </div>
@@ -10,7 +16,7 @@
     </div>
 </template>
 <script setup>
-import { ref } from 'vue';
+import { reactive } from 'vue';
 import InfiniteLoading from "v3-infinite-loading";
 import { useRoute } from 'vue-router';
 import MyCal from '@/components/MyCalendar.vue'
@@ -18,45 +24,43 @@ import axios from 'axios';
 // import "v3-infinite-loading/lib/style.css";
 
 let query = useRoute().query
-let comments = ref([])
+let data = reactive({
+    feeds: []
+})
 let page = 1
 
 const date = `"${query.year}-${query.month}-${query.day}"`
 const suser = 1
 
 const load = async $state => {
-    console.log('im here');
     try {
-        const json = loadData()
-        
+        const json = await axios.get(`/feed/getSpecDay?suser=${suser}&day=${date}&page=${page}`
+        ).then(res => {
+            console.log(res.data);
+            return res.data
+        }).catch(err => {
+            console.log(err);
+        })
+
         if (json.length < 10) {
             console.log("complete all");
+            data.feeds.push(...json)
+            $state.loaded()
             $state.complete()
         }
         else {
             console.log("load");
-            comments.value.push(...json)
+            data.feeds.push(...json)
             $state.loaded()
         }
-        page++
         console.log('hi' + page);
+        page++
     } catch (error) {
         $state.error()
         console.log(error);
     }
 }
 
-
-const loadData = ()=>{
-    axios.get(`/feed/getSpecDay?suser=${suser}&day=${date}&page=${page}`
-    ).then(res=>{
-        let data = res.data
-        console.log("data:" + data);
-        return data
-    }).catch(err=>{
-        console.log(err);
-    })
-}
 </script>
 
 <script>
@@ -74,29 +78,34 @@ export default {
 }
 </script>
 <style>
-#main{
+#main {
     display: inline-block;
     width: 70vw;
     overflow: scroll;
 }
-#cal{
-    vertical-align: top ;
+
+#cal {
+    vertical-align: top;
     display: inline-block;
     width: 30vw;
     height: 30vh;
 }
-.day{
+
+.day {
     font-size: 10px;
 }
-.td-link{
+
+.td-link {
     width: 1em;
     height: 1em;
     border: none !important
 }
-.td-link:hover{
+
+.td-link:hover {
     background-color: #7de0b4;
 }
-.imsi{
+
+.imsi {
     height: 110vh;
     background-color: yellow;
 }

@@ -80,6 +80,7 @@ public class FeedController {
     public List<FeedEntity> goSpecDay(String suser, String day,String page) {
         logger.info("get spec day : user " + suser);
         logger.info("get spec day : day " + day);
+        logger.info("get spec day : page " + page);
         SuserEntity suserEntity = new SuserEntity();
         suserEntity.setPk(Integer.parseInt(suser));
 
