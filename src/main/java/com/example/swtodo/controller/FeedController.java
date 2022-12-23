@@ -12,8 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.swtodo.dto.SeeTodoDTO;
-import com.example.swtodo.dto.TodoDTO;
+import com.example.swtodo.dto.FeedDTO;
 import com.example.swtodo.entity.FeedEntity;
 import com.example.swtodo.entity.SuserEntity;
 import com.example.swtodo.service.FeedService;
@@ -43,7 +42,7 @@ public class FeedController {
     }
 
     @PostMapping(value = "/addTodo")
-    public String goAddTodo(@RequestBody TodoDTO todoDTO) {
+    public String goAddTodo(@RequestBody FeedDTO todoDTO) {
         logger.info("add todo : " + todoDTO);
         feedService.addTodo(todoDTO);
 
@@ -59,7 +58,7 @@ public class FeedController {
 
     // view page
     @GetMapping(value = "/getCurrentTodo")
-    public List<SeeTodoDTO> goCurrentTodo(@RequestParam String suser) {
+    public List<FeedDTO> goCurrentTodo(@RequestParam String suser) {
         logger.info("current todo : user " + suser);
         SuserEntity suserEntity = new SuserEntity();
         suserEntity.setPk(Integer.parseInt(suser));
@@ -68,7 +67,7 @@ public class FeedController {
     }
 
     @GetMapping(value = "/getExpireTodo")
-    public List<SeeTodoDTO> goExpiredTodo(@RequestParam String suser) {
+    public List<FeedDTO> goExpiredTodo(@RequestParam String suser) {
         logger.info("expire todo : user " + suser);
         SuserEntity suserEntity = new SuserEntity();
         suserEntity.setPk(Integer.parseInt(suser));
@@ -77,14 +76,17 @@ public class FeedController {
     }
 
     @GetMapping(value = "/getSpecDay")
-    public List<FeedEntity> goSpecDay(String suser, String day,String page) {
+    public List<FeedDTO> goSpecDay(String suser, String day,String page) {
         logger.info("get spec day : user " + suser);
         logger.info("get spec day : day " + day);
         logger.info("get spec day : page " + page);
         SuserEntity suserEntity = new SuserEntity();
         suserEntity.setPk(Integer.parseInt(suser));
-
-        return feedService.getSpecDay(suserEntity, day, page);
+        List<FeedDTO> list = feedService.getSpecDay(suserEntity, day, page);
+        for (FeedDTO feedDTO : list) {
+            System.out.println(feedDTO);
+        }
+        return list;
     }
 
     @GetMapping(value = "/viewReport")

@@ -1,11 +1,13 @@
 package com.example.swtodo.repository_custom;
 
 import javax.persistence.EntityManager;
+import javax.persistence.TemporalType;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.example.swtodo.entity.FeedEntity;
 
+import java.util.Date;
 import java.util.List;
 
 public class FeedCustomRepoImpl implements FeedCustomRepo {
@@ -159,17 +161,20 @@ public class FeedCustomRepoImpl implements FeedCustomRepo {
     // 특정 유저의 '특정 날짜'의 모든 피드를 가져옴. 10개씩 가져옴
     @Override
     public List<FeedEntity> findAllToday(int suser, String today, int page) {
-        final String SQL = "SELECT f FROM feed AS f "+
+        final String SQL = "SELECT * FROM feed AS f "+
         "WHERE f.suser=:suser " +
-        "AND DATE(:today) BETWEEN DATE_FORMAT(f.start_day,'%YY-%mm-%dd') AND DATE_FORMAT(f.end_day,'%YY-%mm-%dd') ";
-        System.out.println("today : "+today);
-
-        List<FeedEntity> result = em.createQuery(SQL, FeedEntity.class)
+        "AND :today BETWEEN f.start_day AND f.end_day "+
+        "ORDER BY f.ftype ";
+        List<FeedEntity> result = em.createNativeQuery(SQL, FeedEntity.class)
         .setParameter("suser", suser)
-        .setParameter("today", today)
+        .setParameter("today",today)
         .setFirstResult((page-1)*10)
         .setMaxResults(10)
         .getResultList();
+
+        for (FeedEntity feedEntity : result) {
+            System.out.println(feedEntity);
+        }
 
         em.clear();
         

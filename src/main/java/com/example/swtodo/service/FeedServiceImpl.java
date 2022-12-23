@@ -8,8 +8,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.swtodo.dto.SeeTodoDTO;
-import com.example.swtodo.dto.TodoDTO;
+import com.example.swtodo.dto.FeedDTO;
 import com.example.swtodo.entity.FeedEntity;
 import com.example.swtodo.entity.SuserEntity;
 import com.example.swtodo.repository.TodoProgressRepo;
@@ -40,8 +39,8 @@ public class FeedServiceImpl implements FeedService {
     }
 
     @Override
-    public void addTodo(TodoDTO todoDTO) {
-        int pk = feedRepo.save(todoDTO.getTodoEntity()).getPk();
+    public void addTodo(FeedDTO todoDTO) {
+        int pk = feedRepo.save(todoDTO.getFeedEntity()).getPk();
         List<String> dates = new ArrayList<String>();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         Calendar startDay = Calendar.getInstance();
@@ -104,35 +103,44 @@ public class FeedServiceImpl implements FeedService {
     }
 
     @Override
-    public List<SeeTodoDTO> getCurrentTodo(SuserEntity userEntity) {
+    public List<FeedDTO> getCurrentTodo(SuserEntity userEntity) {
         List<FeedEntity> sqlList = feedRepo.findTodoCurrent(userEntity.getPk(), dateConfigure.getToday());
-        List<SeeTodoDTO> resultList = new ArrayList<>();
+        List<FeedDTO> resultList = new ArrayList<>();
         for (FeedEntity todoEntity : sqlList) {
-            SeeTodoDTO seeTodoDTO = new SeeTodoDTO();
-            seeTodoDTO.insertObject(todoEntity);
-            seeTodoDTO.setPercent(todoProgressRepo.calcPercentageByNumAndPk(seeTodoDTO.getPk()));
-            resultList.add(seeTodoDTO);
+            FeedDTO feedDTO = new FeedDTO();
+            feedDTO.insertObject(todoEntity);
+            feedDTO.setPercent(todoProgressRepo.calcPercentageByNumAndPk(feedDTO.getPk()));
+            resultList.add(feedDTO);
         }
         return resultList;
     }
 
     @Override
-    public List<SeeTodoDTO> getExpiredTodo(SuserEntity userEntity) {
+    public List<FeedDTO> getExpiredTodo(SuserEntity userEntity) {
         List<FeedEntity> sqlList = feedRepo.findTodoExpired(userEntity.getPk(), dateConfigure.getToday());
-        List<SeeTodoDTO> resultList = new ArrayList<>();
+        List<FeedDTO> resultList = new ArrayList<>();
         for (FeedEntity todoEntity : sqlList) {
-            SeeTodoDTO seeTodoDTO = new SeeTodoDTO();
-            seeTodoDTO.insertObject(todoEntity);
-            seeTodoDTO.setPercent(todoProgressRepo.calcPercentageByNumAndPk(seeTodoDTO.getPk()));
-            resultList.add(seeTodoDTO);
+            FeedDTO feedDTO = new FeedDTO();
+            feedDTO.insertObject(todoEntity);
+            feedDTO.setPercent(todoProgressRepo.calcPercentageByNumAndPk(feedDTO.getPk()));
+            resultList.add(feedDTO);
         }
         return resultList;
     }
 
     @Override
-    public List<FeedEntity> getSpecDay(SuserEntity userEntity,String date, String page){
+    public List<FeedDTO> getSpecDay(SuserEntity userEntity,String date, String page){
         List<FeedEntity> feedList = feedRepo.findAllToday(userEntity.getPk(), date, Integer.parseInt(page));
-        return feedList;
+        List<FeedDTO> resultList = new ArrayList<FeedDTO>();
+        for (FeedEntity feedEntity : feedList) {
+            FeedDTO feedDTO = new FeedDTO();
+            feedDTO.insertObject(feedEntity);
+            if(feedDTO.getFtype()==1){ // ftype이 todo이면 calc를 계산한다
+                feedDTO.setPercent(todoProgressRepo.calcPercentageByNumAndPk(feedDTO.getPk()));
+            }
+            resultList.add(feedDTO);
+        }
+        return resultList;
     }
 
     
