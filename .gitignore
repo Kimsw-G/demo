@@ -34,3 +34,6 @@ build/
 
 ### yml ###
 /src/main/resources/application-jdbc.yml
+
+### node modules
+/src/frontvue/node_modules
