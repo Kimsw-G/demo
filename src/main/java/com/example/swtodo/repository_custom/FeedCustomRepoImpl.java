@@ -1,13 +1,11 @@
 package com.example.swtodo.repository_custom;
 
 import javax.persistence.EntityManager;
-import javax.persistence.TemporalType;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.example.swtodo.entity.FeedEntity;
 
-import java.util.Date;
 import java.util.List;
 
 public class FeedCustomRepoImpl implements FeedCustomRepo {
@@ -111,8 +109,8 @@ public class FeedCustomRepoImpl implements FeedCustomRepo {
     // 이벤트를 저장
     @Override
     public void saveEvent(FeedEntity feedEntity) {
-        String sql = "INSERT INTO feed(start_day, ftitle, ftext, suser, ftype) VALUES " +
-        "(:start_day, :ftitle, :ftext, :suser, 2)";
+        String sql = "INSERT INTO feed(start_day, ftitle, ftext, suser, ftype, freq) VALUES " +
+        "(:start_day, :ftitle, :ftext, :suser, 2, :freq)";
 
         System.out.println(sql);
         em.createNativeQuery(sql)
@@ -120,6 +118,7 @@ public class FeedCustomRepoImpl implements FeedCustomRepo {
         .setParameter("ftitle", feedEntity.getFtitle())
         .setParameter("ftext", feedEntity.getFtext())
         .setParameter("suser", feedEntity.getSuser())
+        .setParameter("freq", feedEntity.getFreq())
         .executeUpdate();
         em.clear();
     }
@@ -172,9 +171,9 @@ public class FeedCustomRepoImpl implements FeedCustomRepo {
         .setMaxResults(10)
         .getResultList();
 
-        for (FeedEntity feedEntity : result) {
-            System.out.println(feedEntity);
-        }
+        // for (FeedEntity feedEntity : result) {
+        //     System.out.println(feedEntity);
+        // }
 
         em.clear();
         

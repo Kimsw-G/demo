@@ -27,6 +27,7 @@ public class FeedEntity {
     private String ftext;
     private int suser;
     private int ftype;
+    private int freq;
 
     
 }

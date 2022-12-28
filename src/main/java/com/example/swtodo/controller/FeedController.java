@@ -42,9 +42,9 @@ public class FeedController {
     }
 
     @PostMapping(value = "/addTodo")
-    public String goAddTodo(@RequestBody FeedDTO todoDTO) {
-        logger.info("add todo : " + todoDTO);
-        feedService.addTodo(todoDTO);
+    public String goAddTodo(@RequestBody FeedEntity feedEntity) {
+        logger.info("add todo : " + feedEntity);
+        feedService.addTodo(feedEntity);
 
         return "addTodo";
     }
@@ -83,9 +83,9 @@ public class FeedController {
         SuserEntity suserEntity = new SuserEntity();
         suserEntity.setPk(Integer.parseInt(suser));
         List<FeedDTO> list = feedService.getSpecDay(suserEntity, day, page);
-        for (FeedDTO feedDTO : list) {
-            System.out.println(feedDTO);
-        }
+        // for (FeedDTO feedDTO : list) {
+        //     System.out.println(feedDTO);
+        // }
         return list;
     }
 
@@ -102,4 +102,13 @@ public class FeedController {
 
         return "viewDiary";
     }
+
+
+    @PostMapping(value="switchTodo")
+    public String doTodo(@RequestBody String pk, String day, String flag){
+        // flag 0이면 undo, 1이면 do
+        logger.info(String.format("%s todo %s %s %s", (flag.equals("1")?"do":"undo"), pk, day));
+        return "";
+    }
+    
 }

@@ -12,7 +12,7 @@ public interface FeedService {
     // 새로운 일기, 이벤트, 할 일들을 추가
     public void addDiary(FeedEntity feedEntity);
     public void addEvent(FeedEntity feedEntity);
-    public void addTodo(FeedDTO feedEntity);
+    public void addTodo(FeedEntity feedEntity);
 
     // 일기, 이벤트, 할 일들을 삭제
     public void delEvent(FeedEntity feedEntity);

@@ -37,6 +37,19 @@ public class TodoProgressCustomRepoImpl implements TodoProgressCustomRepo {
         em.clear();
         return (int)(((double)done/all)*100);
     }
+    @Override
+    public int findByIdAndDate(int pk, String today){
+        final String SQL="SELECT flag FROM todo_progress "+
+        "WHERE todonum = :pk "+
+        "AND dday = :today";
+        int done = (int)em.createNativeQuery(SQL)
+        .setParameter("pk", pk)
+        .setParameter("today", today)
+        .getSingleResult();
+        em.clear();
+        return done;
+    }
+
 
     @Override
     public void insertTodoProgress(int todonum,List<String> dates){

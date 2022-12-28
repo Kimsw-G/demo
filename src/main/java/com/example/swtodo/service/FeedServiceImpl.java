@@ -39,17 +39,20 @@ public class FeedServiceImpl implements FeedService {
     }
 
     @Override
-    public void addTodo(FeedDTO todoDTO) {
-        int pk = feedRepo.save(todoDTO.getFeedEntity()).getPk();
+    public void addTodo(FeedEntity feedEntity) {
+        int pk = feedRepo.save(feedEntity).getPk();
         List<String> dates = new ArrayList<String>();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         Calendar startDay = Calendar.getInstance();
         Calendar endDay = Calendar.getInstance();
         try {
-            startDay.setTime(sdf.parse(todoDTO.getStart_day()));
-            endDay.setTime(sdf.parse(todoDTO.getEnd_day()));
-        } catch (Exception e) {}
-        boolean[] isDows = dateConfigure.getIsDows(todoDTO.getFreq());
+            startDay.setTime(sdf.parse(feedEntity.getStart_day()));
+            endDay.setTime(sdf.parse(feedEntity.getEnd_day()));
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        boolean[] isDows = dateConfigure.getIsDows(feedEntity.getFreq());
+        System.out.println(isDows);
         int dif = dateConfigure.getDayDiff(endDay, startDay);
         System.out.println(dif);
         for (int i = 0; i < dif; i++) {
@@ -68,8 +71,7 @@ public class FeedServiceImpl implements FeedService {
         for (String date : dates) {
             System.out.println(date);
         }
-        if(dates.size()!=0){
-            
+        if(dates.size()!=0){ 
             todoProgressRepo.insertTodoProgress(pk, dates);
         }
 
@@ -137,6 +139,7 @@ public class FeedServiceImpl implements FeedService {
             feedDTO.insertObject(feedEntity);
             if(feedDTO.getFtype()==1){ // ftype이 todo이면 calc를 계산한다
                 feedDTO.setPercent(todoProgressRepo.calcPercentageByNumAndPk(feedDTO.getPk()));
+                feedDTO.setDone(todoProgressRepo.findByIdAndDate(feedDTO.getPk(),date));
             }
             resultList.add(feedDTO);
         }

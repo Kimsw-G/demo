@@ -21,6 +21,7 @@ public class FeedDTO{
 
     private int percent;
     private int freq;
+    private int done;
 
     public FeedEntity getFeedEntity(){
         FeedEntity feedEntity = new FeedEntity();

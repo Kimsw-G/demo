@@ -1,6 +1,5 @@
 package com.example.swtodo.share;
 
-import java.util.Date;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
@@ -20,6 +19,7 @@ public class DateConfigure {
         return (int)(diffsec/24/60/60);
     }
     public boolean[] getIsDows(int freq){
+        System.out.println("hello");
         String bin = Integer.toBinaryString(freq);
         boolean[] result = new boolean[7];
         while(bin.length()<7){
@@ -27,10 +27,11 @@ public class DateConfigure {
         }
         for (int i = 0; i < 7; i++) {
             char c = bin.charAt(i);
+            System.out.println(c);
             if(c=='1') result[i] = true;
             else result[i] = false;
         }
-        System.out.println(bin);
+        System.out.println(result);
         for (boolean b : result) {
             System.out.println(b);
         }

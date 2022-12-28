@@ -16,8 +16,10 @@ public interface TodoProgressCustomRepo {
     @Modifying
     void undoCheck(int pk);
     
-    // 
+    // 퍼센테이지 계산
     int calcPercentageByNumAndPk(int pk);
+    // 했는지 계산
+    int findByIdAndDate(int pk, String today);
 
     @Transactional
     @Modifying
