@@ -9,7 +9,11 @@
                     <div class="profile-box"> <img  class="profile" :src="curlogo"/></div>
                     <div class="title">{{feed.ftitle}}</div>
                 </h4>
-                <div class="date-box box">{{feed.start_day}} ~ {{feed.end_day}}</div>
+                <div class="date-box box">
+                    {{feed.start_day}} ~ {{feed.end_day}}
+                    <img  class="check-box" v-if="feed.done==1" :src="donelogo" @click="switchTodo(0)"/>
+                    <img  class="check-box" v-else :src="notlogo" @click="switchTodo(1)"/>
+                </div>
                 <div><progress class="progress-box box" :value="feed.percent" min="0" max="100"/> {{feed.percent}}%</div>
                 <div class="text-box box">{{ feed.ftext }}</div>
 
@@ -59,6 +63,8 @@ import MyCal from '@/components/MyCalendar.vue'
 import axios from 'axios';
 // import "v3-infinite-loading/lib/style.css";
 const curlogo =  require("@/../public/logo.png")
+const donelogo = require("@/../public/ok.png")
+const notlogo = require("@/../public/no.png")
 
 let query = useRoute().query
 let data = reactive({
@@ -71,6 +77,7 @@ const suser = 1
 
 const load = async $state => {
     try {
+        // 전체 목록들을 불러오는 axios
         const json = await axios.get(`/feed/getSpecDay?suser=${suser}&day=${date}&page=${page}`
         ).then(res => {
             console.log(res.data);
@@ -78,6 +85,20 @@ const load = async $state => {
         }).catch(err => {
             console.log(err);
         })
+        // json 데이터중 ftype이 1일때, todoPercentage를 확인하여 json 데이터를 가져와야함
+        for (let i = 0; i < json.length; i++) {
+            console.log(json[i].ftype)
+            if(json[i].ftype==1){
+                // await axios.get(`feed/getSpecDayDone?pk=${data.pk}&day=${date}`
+                // ).then(res=>{
+                //     json[i].done=res.data
+                // }).catch(err=>{
+                //     console.log(err);
+                // })
+                json[i].done=1
+            }
+        }
+        
 
         if (json.length < 10) {
             console.log("complete all");
@@ -97,6 +118,12 @@ const load = async $state => {
         console.log(error);
     }
 }
+
+const switchTodo = flag=>{
+    console.log('switch todo!');
+    
+}
+
 
 </script>
 
@@ -210,5 +237,9 @@ export default {
     overflow:hidden;
     word-wrap:break-word;
     line-height: 1.5em;
+}
+.check-box{
+    widows: 20px;
+    height: 20px;
 }
 </style>
