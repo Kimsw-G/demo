@@ -12,7 +12,8 @@
                 <div class="date-box box">
                     {{feed.start_day}} ~ {{feed.end_day}}
                     <img  class="check-box" v-if="feed.done==1" :src="donelogo" @click="switchTodo(0)"/>
-                    <img  class="check-box" v-else :src="notlogo" @click="switchTodo(1)"/>
+                    <img  class="check-box" v-else-if="feed.done==0" :src="notlogo" @click="switchTodo(1)"/>
+                    {{ feed.done }}
                 </div>
                 <div><progress class="progress-box box" :value="feed.percent" min="0" max="100"/> {{feed.percent}}%</div>
                 <div class="text-box box">{{ feed.ftext }}</div>
@@ -93,7 +94,6 @@ const load = async $state => {
                 // }).catch(err=>{
                 //     console.log(err);
                 // })
-                json[i].done=1
             }
         }
         
@@ -122,7 +122,7 @@ const switchTodo = flag=>{
 
 </script>
 
-<style>
+<style scoped>
 #main {
     display: inline-block;
     width: 70vw;
@@ -134,18 +134,18 @@ const switchTodo = flag=>{
     width: 30vw;
     height: 30vh;
 }
-.day {
+>>>.day {
     font-size: 10px;
 }
-.td-link {
+>>>.td-link {
     width: 1em;
     height: 1em;
     border: none !important
 }
-.td-link:hover {
+>>>.td-link:hover {
     background-color: #7de0b4;
 }
-.imsi {
+>>>.imsi {
     height: 110vh;
     background-color: yellow;
 }

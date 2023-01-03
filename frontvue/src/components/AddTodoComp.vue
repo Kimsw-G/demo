@@ -3,7 +3,8 @@
     <div class="white-bg">
         <label class="ftitle-label" for="ftitle">제목</label>
         <input type="text" id="ftitle" name="ftitle" v-model="ftitle"> <br>
-        <label class="date-label" for="startday">시작일</label><label class="date-label" for="endday">종료일</label>
+        <label class="date-label" for="startday">시작일</label>
+        <label class="date-label" for="endday">종료일</label>
         <input type="date" id="startday" class="date" name="startday" v-model="start_day"><input type="date"
             id="endday" class="date" name="endday" v-model="end_day"> <br>
         <div class="dow-box">
@@ -13,13 +14,14 @@
             </button>
         </div>
         <textarea rows="" cols="" id="ftext" name="etext" v-model="ftext" />
-        <button id="submit" @click="submitData">제출테스트</button>
+        <button id="submit" @click="registTodo">제출테스트</button>
         <pre id="errMsg">{{ errMsg }}</pre>
     </div>
 </div>
 </template>
 
 <script setup>
+import axios from 'axios';
 import { defineEmits,ref } from 'vue';
 const emit = defineEmits('closeTodo')
 const closeModal = event=>{
@@ -33,6 +35,13 @@ const end_day = ref('')
 const ftitle = ref('')
 const ftext = ref('')
 
+const calcDow = _isDows=>{
+    let result = 0
+    for (let i = 0; i < _isDows.length; i++) {
+        if(_isDows[i]) result+=2**(6-i)
+    }
+    return result
+}
 // const suser = ref(1)
 const checkDow = idx=>{
     isDows.value[idx] = !isDows.value[idx]
@@ -47,6 +56,25 @@ const overMouse = idx=>{
 const leaveMouse = idx=>{
     let button = document.querySelector("#button"+idx)
     if(!isDows.value[idx])button.style.backgroundColor= "white"
+}
+
+const registTodo = ()=>{
+    let data = {
+        start_day:start_day.value,
+        end_day:end_day.value,
+        ftitle:ftitle.value,
+        ftext:ftext.value,
+        suser:1,
+        ftype:1,
+        freq:calcDow(isDows.value)
+    }
+    axios.post("/feed/addTodo",data
+    ).then(res=>{
+        console.log(res)
+        emit("closeTodo")
+    }).catch(()=>{
+        errMsg.value = "에러가 발생하였습니다"
+    })
 }
 </script>
 
