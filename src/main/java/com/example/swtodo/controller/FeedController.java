@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.swtodo.dto.FeedDTO;
 import com.example.swtodo.entity.FeedEntity;
 import com.example.swtodo.entity.SuserEntity;
+import com.example.swtodo.entity.TodoProgressEntity;
 import com.example.swtodo.service.FeedService;
 
 
@@ -113,4 +114,23 @@ public class FeedController {
         return list;
     }
     
+    @GetMapping(value = "/doTodo")
+    public String goDoTodo(String pk, String dday){
+        logger.info("doTodo : pk " + pk);
+        TodoProgressEntity todoProgressEntity = new TodoProgressEntity();
+        todoProgressEntity.setPk(Integer.parseInt(pk));
+        todoProgressEntity.setDday(dday);
+        feedService.doTodo(todoProgressEntity);
+        return "doTodo";
+    }
+
+    @GetMapping(value = "/undoTodo")
+    public String goUndoTodo(String pk, String dday){
+        logger.info("undoTodo : pk " + pk);
+        TodoProgressEntity todoProgressEntity = new TodoProgressEntity();
+        todoProgressEntity.setPk(Integer.parseInt(pk));
+        todoProgressEntity.setDday(dday);
+        feedService.undoTodo(todoProgressEntity);
+        return "undoTodo";
+    }
 }

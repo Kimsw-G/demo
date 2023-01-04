@@ -5,6 +5,7 @@ import java.util.List;
 import com.example.swtodo.dto.FeedDTO;
 import com.example.swtodo.entity.FeedEntity;
 import com.example.swtodo.entity.SuserEntity;
+import com.example.swtodo.entity.TodoProgressEntity;
 
 public interface FeedService {
     
@@ -30,7 +31,7 @@ public interface FeedService {
     public void modEvent(FeedEntity feedEntity);
     public void modTodo(FeedEntity feedEntity);
     
-    public void doTodo(FeedEntity feedEntity);
-    public void undoTodo(FeedEntity feedEntity);
+    public void doTodo(TodoProgressEntity todoProgressEntity);
+    public void undoTodo(TodoProgressEntity todoProgressEntity);
 
 }

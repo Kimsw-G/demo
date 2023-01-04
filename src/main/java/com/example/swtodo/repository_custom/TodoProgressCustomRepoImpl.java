@@ -3,7 +3,6 @@ package com.example.swtodo.repository_custom;
 import java.util.List;
 
 import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -12,19 +11,23 @@ public class TodoProgressCustomRepoImpl implements TodoProgressCustomRepo {
     EntityManager em;
 
     @Override
-    public void doCheck(int pk) {
-        final String SQL = "UPDATE todo_progress as tp SET tp.flag = 1 WHERE tp.pk = :pk";
+    public void doCheck(int pk, String dday) {
+        final String SQL = "UPDATE todo_progress as tp SET tp.flag = 1 WHERE tp.todonum = :pk AND dday = :dday";
+        System.out.println(SQL);
         em.createQuery(SQL)
             .setParameter("pk", pk)
+            .setParameter("dday", dday)
             .executeUpdate();
         em.clear();
     }
 
     @Override
-    public void undoCheck(int pk) {
-        final String SQL = "UPDATE todo_progress as tp SET tp.flag = 0 WHERE tp.pk = :pk";
+    public void undoCheck(int pk, String dday) {
+        final String SQL = "UPDATE todo_progress as tp SET tp.flag = 0 WHERE tp.todonum = :pk AND dday = :dday";
+        System.out.println(SQL);
         em.createQuery(SQL)
             .setParameter("pk", pk)
+            .setParameter("dday", dday)
             .executeUpdate();
         em.clear();
     }

@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import com.example.swtodo.dto.FeedDTO;
 import com.example.swtodo.entity.FeedEntity;
 import com.example.swtodo.entity.SuserEntity;
+import com.example.swtodo.entity.TodoProgressEntity;
 import com.example.swtodo.repository.FeedRepo;
 import com.example.swtodo.repository.TodoProgressRepo;
 import com.example.swtodo.share.DateConfigure;
@@ -181,14 +182,14 @@ public class FeedServiceImpl implements FeedService{
     }
 
     @Override
-    public void doTodo(FeedEntity feedEntity) {
-        // TODO Auto-generated method stub
+    public void doTodo(TodoProgressEntity todoProgressEntity) {
+        todoProgressRepo.doCheck(todoProgressEntity.getPk(),todoProgressEntity.getDday());
         
     }
 
     @Override
-    public void undoTodo(FeedEntity feedEntity) {
-        // TODO Auto-generated method stub
+    public void undoTodo(TodoProgressEntity todoProgressEntity) {
+        todoProgressRepo.undoCheck(todoProgressEntity.getPk(),todoProgressEntity.getDday());
         
     }
 
