@@ -4,7 +4,7 @@
             <img class="header-logo" :src="getImageUrl(curlogo)" @mouseover="curlogo=logo_over" @mouseout="curlogo=logo">
         </router-link>
         <router-link to='/todocal'><button>내 달력</button></router-link>
-        <router-link to='/err'><button>미구현</button></router-link>
+        <router-link to='/paging'><button>페이징테스트</button></router-link>
         <router-link to='/err'><button>미구현</button></router-link>
         <router-link to='/login'><button>로그인</button></router-link>
         <router-link to='/signup'><button>회원가입</button></router-link>

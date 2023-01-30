@@ -1,7 +1,12 @@
 <template>
     <div id="main">
         {{ date }}
-        <div class="feed-box" v-for="feed in data.feeds" :key="feed">
+        <div id="add-feed">
+            <p>피드 추가</p>
+            <textarea cols="30" rows="10"></textarea>
+            <button>submit</button>
+        </div>
+        <div class="feed-box" v-for="(feed,idx) in data.feeds" :key="feed">
             <div v-if="feed.ftype==1" class="todo-feed feed">
                 <!-- 할 일 피드 -->
                 
@@ -11,8 +16,9 @@
                 </h4>
                 <div class="date-box box">
                     {{feed.start_day}} ~ {{feed.end_day}}
-                    <img  class="check-box" v-if="feed.done==1" :src="donelogo" @click="switchTodo(0)"/>
-                    <img  class="check-box" v-else :src="notlogo" @click="switchTodo(1)"/>
+                    <img  class="check-box" v-if="feed.done==1" :src="donelogo" @click="switchTodo(0,feed.pk,idx)"/>
+                    <img  class="check-box" v-else-if="feed.done==0" :src="notlogo" @click="switchTodo(1,feed.pk,idx)"/>
+                    {{ feed.done }}
                 </div>
                 <div><progress class="progress-box box" :value="feed.percent" min="0" max="100"/> {{feed.percent}}%</div>
                 <div class="text-box box">{{ feed.ftext }}</div>
@@ -68,7 +74,7 @@ const donelogo = require("../assets/ok.png")
 const notlogo = require("../assets/no.png")
 let query = useRoute().query
 let data = reactive({
-    feeds: []
+    feeds: [],
 })
 let page = 1
 const date = `${query.year}-${query.month}-${query.day}`
@@ -81,6 +87,7 @@ const load = async $state => {
             console.log(res.data);
             return res.data
         }).catch(err => {
+            console.log('에러다!');
             console.log(err);
         })
         // json 데이터중 ftype이 1일때, todoPercentage를 확인하여 json 데이터를 가져와야함
@@ -93,7 +100,6 @@ const load = async $state => {
                 // }).catch(err=>{
                 //     console.log(err);
                 // })
-                json[i].done=1
             }
         }
         
@@ -112,21 +118,121 @@ const load = async $state => {
         page++
     } catch (error) {
         $state.error()
+        console.log('여기가 에러다');
         console.log(error);
     }
 }
-const switchTodo = flag=>{
-    console.log('switch todo!');
-    console.log(flag);
+const switchTodo = (flag,pk,idx)=>{
+    if (flag==0) {
+        axios.get(`/feed/undoTodo?pk=${pk}&dday=${date}`
+        ).then(res => {
+            console.log(res.data);
+            data.feeds[idx].done = 0
+        }).catch(err => {
+            console.log(err);
+        })
+    }else{
+        axios.get(`/feed/doTodo?pk=${pk}&dday=${date}`
+        ).then(res => {
+            console.log(res.data);
+            data.feeds[idx].done = 1
+        }).catch(err => {
+            console.log(err);
+        })
+    }
 }
 
 </script>
 
-<style>
+<style scoped>
 #main {
     display: inline-block;
     width: 70vw;
     overflow: scroll;
+}
+#add-feed{
+    width: 40em;
+    height: 7em;
+    margin: auto;
+    grid-template-columns: 3fr 1fr;
+    grid-template-rows: 1.5em auto;
+    display: grid;
+}
+#add-feed *{
+    place-items: center;
+    font-size: 16px;
+    margin-top: 20px;
+}
+#add-feed p{
+    grid-column: 1 / span 2;
+}
+#add-feed textarea {
+    resize: none;
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background: none repeat scroll 0 0 rgba(0, 0, 0, 0.07);
+    border-color: -moz-use-text-color #FFFFFF #FFFFFF -moz-use-text-color;
+    border-image: none;
+    border-radius: 6px 6px 6px 6px;
+    border-style: none solid solid none;
+    border-width: medium 1px 1px medium;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12) inset;
+    color: #555555;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: 1em;
+    line-height: 1.4em;
+    padding: 5px 8px;
+    transition: background-color 0.2s ease 0s;
+}
+
+
+#add-feed textarea:focus {
+    background: none repeat scroll 0 0 #FFFFFF;
+    outline-width: 0;
+}
+#add-feed button{
+    align-items: center;
+    background-color: #7de0b4;
+    border: 0;
+    border-radius: 100px;
+    box-sizing: border-box;
+    color: #ffffff;
+    cursor: pointer;
+    display: inline-flex;
+    font-family: -apple-system, system-ui, system-ui, "Segoe UI", Roboto, "Helvetica Neue", "Fira Sans", Ubuntu, Oxygen, "Oxygen Sans", Cantarell, "Droid Sans", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Lucida Grande", Helvetica, Arial, sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    justify-content: center;
+    line-height: 20px;
+    max-width: 480px;
+    min-height: 40px;
+    min-width: 0px;
+    overflow: hidden;
+    padding: 0px;
+    padding-left: 20px;
+    padding-right: 20px;
+    text-align: center;
+    touch-action: manipulation;
+    transition: background-color 0.167s cubic-bezier(0.4, 0, 0.2, 1) 0s, box-shadow 0.167s cubic-bezier(0.4, 0, 0.2, 1) 0s, color 0.167s cubic-bezier(0.4, 0, 0.2, 1) 0s;
+    user-select: none;
+    -webkit-user-select: none;
+    vertical-align: middle;
+}
+#add-feed button:hover,
+#add-feed button:focus { 
+    background-color: #569c7d;
+    color: #ffffff;
+}
+#add-feed button:active {
+    background: #09223b;
+    color: rgb(255, 255, 255, .7);
+}
+#add-feed button:disabled { 
+    cursor: not-allowed;
+    background: rgba(0, 0, 0, .08);
+    color: rgba(0, 0, 0, .3);
 }
 #cal {
     vertical-align: top;
@@ -134,18 +240,18 @@ const switchTodo = flag=>{
     width: 30vw;
     height: 30vh;
 }
-.day {
+>>>.day {
     font-size: 10px;
 }
-.td-link {
+>>>.td-link {
     width: 1em;
     height: 1em;
     border: none !important
 }
-.td-link:hover {
+>>>.td-link:hover {
     background-color: #7de0b4;
 }
-.imsi {
+>>>.imsi {
     height: 110vh;
     background-color: yellow;
 }

@@ -11,6 +11,7 @@ const LOGIN_VIEW = () => import(/* webpackChunkName: "identi"   */ '@/views/Logi
 const SIGNUP_VIEW = () => import(/* webpackChunkName: "identi"   */ '@/views/SignupView.vue')
 const SEETODO_VIEW = () => import(/* webpackChunkName: "identi"   */ '@/views/SeeTodoView.vue')
 const SPECDAY_VIEW = () => import(/* webpackChunkName: "identi"   */ '@/views/SpecDayView.vue')
+const PAGING_VIEW = () => import(/* webpackChunkName: "identi"   */ '@/views/PagingView.vue')
 
 
 const routes = [
@@ -68,6 +69,14 @@ const routes = [
         components: {
             header: HEADER,
             default: SPECDAY_VIEW
+        }
+    },
+    {
+        path: '/paging',
+        name: 'paging',
+        components: {
+            header: HEADER,
+            default: PAGING_VIEW
         }
     },
 ]

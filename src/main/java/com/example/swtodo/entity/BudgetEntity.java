@@ -1,4 +1,4 @@
-package com.example.demo.sta.entity;
+package com.example.swtodo.entity;
 
 import java.util.Date;
 
