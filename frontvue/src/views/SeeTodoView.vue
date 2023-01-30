@@ -32,7 +32,7 @@
             </form>
             <table id="open-todo">
                 <tr v-for="todo in data.currentTodo" :key="todo" class="todo-tr">
-                    <td>{{ todo.ftitle }}</td>
+                    <td>{{ todo.ttitle }}</td>
                     <td>{{ todo.start_day }}</td>
                     <td>{{ todo.end_day }}</td>
                     <td class="progress-td"><progress class="todo-progress" :value="todo.percent" min="0" max="100" />
@@ -68,7 +68,7 @@
             </ul>
             <table id="close-todo">
                 <tr v-for="todo in data.expireTodo" :key="todo" class="todo-tr">
-                    <td>{{ todo.ttitle }}</td>
+                    <td>{{ todo.ftitle }}</td>
                     <td>{{ todo.start_day }}</td>
                     <td>{{ todo.end_day }}</td>
                     <td class="progress-td"><progress class="todo-progress" :value="todo.percent" min="0" max="100" />
