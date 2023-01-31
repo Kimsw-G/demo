@@ -55,7 +55,8 @@ public class FeedController {
 
     @PostMapping(value = "/addFeed")
     public String goAddFeed(@RequestBody FeedEntity feedEntity){
-        logger.info("add diary");
+        logger.info("addFeed");
+        System.out.println(feedEntity);
         feedService.addFeed(feedEntity);
 
         return "addFeed";

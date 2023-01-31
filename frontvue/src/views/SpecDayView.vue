@@ -3,8 +3,8 @@
         {{ date }}
         <div id="add-feed">
             <p>피드 추가</p>
-            <textarea cols="30" rows="10"></textarea>
-            <button>submit</button>
+            <textarea cols="30" rows="10" v-model="feed"></textarea>
+            <button @click="addFeed">submit</button>
         </div>
         <div class="feed-box" v-for="(feed,idx) in data.feeds" :key="feed">
             <div v-if="feed.ftype==1" class="todo-feed feed">
@@ -63,7 +63,7 @@
 </template>
 
 <script setup>
-import { reactive } from 'vue';
+import { reactive, ref } from 'vue';
 import InfiniteLoading from "v3-infinite-loading";
 import { useRoute } from 'vue-router';
 import MyCal from '@/components/MyCalendarComp.vue'
@@ -72,6 +72,8 @@ import axios from 'axios';
 const curlogo =  require("../assets/logo.png")
 const donelogo = require("../assets/ok.png")
 const notlogo = require("../assets/no.png")
+const feed = ref('')
+
 let query = useRoute().query
 let data = reactive({
     feeds: [],
@@ -141,7 +143,23 @@ const switchTodo = (flag,pk,idx)=>{
         })
     }
 }
-
+const addFeed = ()=>{
+    console.log(feed.value)
+    let data = {
+        start_day:date,
+        end_day:date,
+        ftitle: '',
+        ftext: feed.value,
+        suser: 1,
+        ftype: 3,
+    }
+    axios.post("/feed/addFeed",data
+    ).then(res=>{
+        console.log(res)
+    }).catch(()=>{
+        console.log('에러!');
+    })
+}
 </script>
 
 <style scoped>

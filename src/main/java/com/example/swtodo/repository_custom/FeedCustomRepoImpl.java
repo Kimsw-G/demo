@@ -158,11 +158,12 @@ public class FeedCustomRepoImpl implements FeedCustomRepo {
     // 일기 저장
     @Override
     public void saveFeed(FeedEntity feedEntity) {
-        String sql = "INSERT INTO feed(start_day, ftitle, ftext, suser, ftype) VALUES " +
-        "(:start_day, :ftitle, :ftext, :suser, 3)";
+        String sql = "INSERT INTO feed(start_day, end_day, ftitle, ftext, suser, ftype, freq) VALUES " +
+        "(:start_day, :end_day, :ftitle, :ftext, :suser, 3, 0)";
 
         em.createNativeQuery(sql)
         .setParameter("start_day", feedEntity.getStart_day())
+        .setParameter("end_day", feedEntity.getStart_day())
         .setParameter("ftitle", feedEntity.getFtitle())
         .setParameter("ftext", feedEntity.getFtext())
         .setParameter("suser", feedEntity.getSuser())
