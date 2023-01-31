@@ -16,7 +16,7 @@
                 </h4>
                 <div class="date-box box">
                     {{feed.start_day}} ~ {{feed.end_day}}
-                    <img  class="check-box" v-if="feed.done==1" :src="donelogo" @click="switchTodo(0,feed.pk,idx)"/>
+                    <img  class="check-box" v-if="feed.done==1" :src="donelogo" @click="switchTodo(0,feed.pk,idxm)"/>
                     <img  class="check-box" v-else-if="feed.done==0" :src="notlogo" @click="switchTodo(1,feed.pk,idx)"/>
                     {{ feed.done }}
                 </div>
@@ -133,6 +133,7 @@ const switchTodo = (flag,pk,idx)=>{
         }).catch(err => {
             console.log(err);
         })
+        window.location.reload(true)
     }else{
         axios.get(`/feed/doTodo?pk=${pk}&dday=${date}`
         ).then(res => {
@@ -141,6 +142,7 @@ const switchTodo = (flag,pk,idx)=>{
         }).catch(err => {
             console.log(err);
         })
+        window.location.reload(true)
     }
 }
 const addFeed = ()=>{
@@ -159,6 +161,8 @@ const addFeed = ()=>{
     }).catch(()=>{
         console.log('에러!');
     })
+    window.location.reload(true)
+
 }
 </script>
 
