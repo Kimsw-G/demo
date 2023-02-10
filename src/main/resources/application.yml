@@ -34,3 +34,5 @@ logging:
   logback:
     rollingpolicy:
       file-name-pattern: "/logs/abc.%d{yyyy-MM-dd}.%i"
+
+
